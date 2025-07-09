@@ -200,6 +200,11 @@ function renderConfirm() {
 function renderInfo() {
   document.title = 'Порядок зачисления суммы рассрочки';
   document.getElementById('app').innerHTML = `
+    <button id="infoCloseBtn" class="info-close-btn" aria-label="Закрыть" style="position:absolute;top:16px;right:16px;background:none;border:none;padding:0;z-index:10;">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M31 18.4L29.6 17L24 22.6L18.4 17L17 18.4L22.6 24L17 29.6L18.4 31L24 25.4L29.6 31L31 29.6L25.4 24L31 18.4Z" fill="#0E0E0E"/>
+      </svg>
+    </button>
     <h2 class="screen-title" style="margin-top:32px;">Порядок зачисления<br>суммы рассрочки</h2>
     <p style="font-size:1.15rem;margin-bottom:18px;">По закону о защите от мошенничества, кредитные деньги зачислим<br>через некоторое время.</p>
     <p style="font-size:1.15rem;margin-bottom:18px;">Срок зачисления зависит от суммы долга по действующим рассрочкам и суммы новой рассрочки</p>
@@ -214,6 +219,9 @@ function renderInfo() {
     <button class="info-ok-btn" id="infoOkBtn">Понятно</button>
   `;
   document.getElementById('infoOkBtn').addEventListener('click', () => {
+    location.hash = 'confirm';
+  });
+  document.getElementById('infoCloseBtn').addEventListener('click', () => {
     location.hash = 'confirm';
   });
 }
