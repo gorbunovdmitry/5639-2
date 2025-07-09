@@ -37,7 +37,7 @@ input:focus {
   border-radius: 16px;
   font-size: 1.2rem;
   font-weight: 600;
-  margin-top: 32px;
+  margin-top: 27px;
   cursor: pointer;
   transition: background 0.2s;
 }
