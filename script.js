@@ -102,6 +102,10 @@ function renderCalculator() {
   });
   if (isAmountValid) {
     document.getElementById('nextBtn').addEventListener('click', () => {
+      if (typeof gtag === 'function') {
+        window.gtag('event', 'continue_click');
+      }
+      console.log('continue_click');
       location.hash = 'confirm';
     });
   }
