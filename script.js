@@ -122,7 +122,32 @@ function renderCalculator() {
   document.querySelectorAll('.term-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       state.term = parseInt(btn.dataset.term);
-      renderCalculator();
+      // Ререндерим только блок выбора срока
+      const termBtnsBlock = document.querySelector('.term-btns');
+      if (termBtnsBlock) {
+        termBtnsBlock.innerHTML = TERMS.map(term => `<button class="term-btn${state.term === term ? ' selected' : ''}" data-term="${term}">${term} мес</button>`).join('');
+        // Перевешиваем обработчики на новые кнопки
+        termBtnsBlock.querySelectorAll('.term-btn').forEach(newBtn => {
+          newBtn.addEventListener('click', e => {
+            state.term = parseInt(newBtn.dataset.term);
+            // Рекурсивно ререндерим только блок выбора срока
+            const termBtnsBlockInner = document.querySelector('.term-btns');
+            if (termBtnsBlockInner) {
+              termBtnsBlockInner.innerHTML = TERMS.map(term => `<button class="term-btn${state.term === term ? ' selected' : ''}" data-term="${term}">${term} мес</button>`).join('');
+              termBtnsBlockInner.querySelectorAll('.term-btn').forEach(btnInner => {
+                btnInner.addEventListener('click', e => {
+                  state.term = parseInt(btnInner.dataset.term);
+                  // ... и так далее, но глубже не нужно, т.к. всегда будет только один уровень
+                });
+              });
+            }
+          });
+        });
+      }
+      // Остальные обновления (если нужно)
+      state.payment = calcPayment(state.amount, state.term);
+      state.serviceFee = calcServiceFee(state.amount, state.term);
+      document.querySelector('.card-title').textContent = formatMoney(state.payment) + ' в месяц';
     });
   });
   document.getElementById('nextBtn').addEventListener('click', () => {
