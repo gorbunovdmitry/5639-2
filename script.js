@@ -76,6 +76,24 @@ function render() {
   }
 }
 
+function renderTermBtns() {
+  const termBtnsBlock = document.querySelector('.term-btns');
+  if (termBtnsBlock) {
+    termBtnsBlock.innerHTML = TERMS.map(term => 
+      `<button class="term-btn${state.term === term ? ' selected' : ''}" data-term="${term}">${term} мес</button>`
+    ).join('');
+    termBtnsBlock.querySelectorAll('.term-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        state.term = parseInt(btn.dataset.term);
+        renderTermBtns();
+        state.payment = calcPayment(state.amount, state.term);
+        state.serviceFee = calcServiceFee(state.amount, state.term);
+        document.querySelector('.card-title').textContent = formatMoney(state.payment) + ' в месяц';
+      });
+    });
+  }
+}
+
 function renderCalculator() {
   document.title = 'Рассрочка';
   const app = document.getElementById('app');
@@ -96,6 +114,8 @@ function renderCalculator() {
     document.querySelector('.card small').textContent = 'включая плату за услугу';
     document.getElementById('amount').className = isAmountValid ? '' : 'input-error';
     document.getElementById('nextBtn').disabled = !isAmountValid;
+    // Ререндерим только блок выбора срока
+    renderTermBtns();
     return;
   }
   // Первый рендер — создаём всю разметку
@@ -106,9 +126,7 @@ function renderCalculator() {
     <input id="amount" type="number" value="${state.amount}" autocomplete="off" class="" />
     <div style="color:#888;font-size:1rem;margin-bottom:16px;">от 1 000 ₽ до 100 000 ₽</div>
     <div style="color:#888;font-size:1.1rem;">Выберите срок</div>
-    <div class="term-btns">
-      ${TERMS.map(term => `<button class="term-btn${state.term === term ? ' selected' : ''}" data-term="${term}">${term} мес</button>`).join('')}
-    </div>
+    <div class="term-btns"></div>
     <div class="card">
       <div class="card-title">${formatMoney(calcPayment(state.amount, state.term))} в месяц</div>
       <small>включая плату за услугу</small>
@@ -119,37 +137,8 @@ function renderCalculator() {
     state.amount = e.target.value;
     renderCalculator();
   });
-  document.querySelectorAll('.term-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      state.term = parseInt(btn.dataset.term);
-      // Ререндерим только блок выбора срока
-      const termBtnsBlock = document.querySelector('.term-btns');
-      if (termBtnsBlock) {
-        termBtnsBlock.innerHTML = TERMS.map(term => `<button class="term-btn${state.term === term ? ' selected' : ''}" data-term="${term}">${term} мес</button>`).join('');
-        // Перевешиваем обработчики на новые кнопки
-        termBtnsBlock.querySelectorAll('.term-btn').forEach(newBtn => {
-          newBtn.addEventListener('click', e => {
-            state.term = parseInt(newBtn.dataset.term);
-            // Рекурсивно ререндерим только блок выбора срока
-            const termBtnsBlockInner = document.querySelector('.term-btns');
-            if (termBtnsBlockInner) {
-              termBtnsBlockInner.innerHTML = TERMS.map(term => `<button class="term-btn${state.term === term ? ' selected' : ''}" data-term="${term}">${term} мес</button>`).join('');
-              termBtnsBlockInner.querySelectorAll('.term-btn').forEach(btnInner => {
-                btnInner.addEventListener('click', e => {
-                  state.term = parseInt(btnInner.dataset.term);
-                  // ... и так далее, но глубже не нужно, т.к. всегда будет только один уровень
-                });
-              });
-            }
-          });
-        });
-      }
-      // Остальные обновления (если нужно)
-      state.payment = calcPayment(state.amount, state.term);
-      state.serviceFee = calcServiceFee(state.amount, state.term);
-      document.querySelector('.card-title').textContent = formatMoney(state.payment) + ' в месяц';
-    });
-  });
+  // Ререндерим только блок выбора срока после вставки HTML
+  renderTermBtns();
   document.getElementById('nextBtn').addEventListener('click', () => {
     // --- АНАЛИТИКА: Клик по "Продолжить" ---
     sendGA('5639_click_continue_var2');
