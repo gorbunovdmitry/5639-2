@@ -1,3 +1,4 @@
+console.log('script.js loaded');
 // --- Константы ---
 const RATE = 0.20; // 20% годовых
 const MIN_AMOUNT = 1000;
@@ -10,11 +11,13 @@ const VARIANT = 'ghk_5639_var2';
 const METRIKA_ID = 96171108;
 
 function sendGA(event, params = {}) {
+  console.log('[GA4] sendGA', event, params);
   if (typeof gtag === 'function') {
     gtag('event', event, params);
   }
 }
 function sendYM(event, params = {}) {
+  console.log('[YM] sendYM', event, params);
   if (typeof ym === 'function') {
     ym(METRIKA_ID, 'reachGoal', event, params);
   }
