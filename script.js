@@ -5,12 +5,34 @@ const MAX_AMOUNT = 100000;
 const TERMS = [3, 6, 9, 12];
 const STORAGE_KEY = 'installment-completed';
 
+// --- АНАЛИТИКА ---
+const VARIANT = 'ghk_5639_var2';
+const METRIKA_ID = 96171108;
+
+function sendGA(event, params = {}) {
+  if (typeof gtag === 'function') {
+    gtag('event', event, params);
+  }
+}
+function sendYM(event, params = {}) {
+  if (typeof ym === 'function') {
+    ym(METRIKA_ID, 'reachGoal', event, params);
+  }
+}
+
 // --- Состояние ---
 let state = {
   amount: 100000,
   term: 12,
   payment: null,
-  serviceFee: null
+  serviceFee: null,
+  // Флаги для аналитики
+  analytics: {
+    chooseLoanScreen: false,
+    agreementScreen: false,
+    endScreen: false,
+    moreInfoScreen: false
+  }
 };
 
 // --- Утилиты ---
@@ -54,6 +76,12 @@ function render() {
 function renderCalculator() {
   document.title = 'Рассрочка';
   const app = document.getElementById('app');
+  // --- АНАЛИТИКА: Просмотр экрана выбора условий рассрочки ---
+  if (!state.analytics.chooseLoanScreen) {
+    sendGA('5639_page_view_choose_loan_var2');
+    sendYM('5639_page_view_choose_loan_var2');
+    state.analytics.chooseLoanScreen = true;
+  }
   // Если поле уже есть, не пересоздаём его, а только обновляем связанные части
   if (document.getElementById('amount')) {
     // Только обновляем связанные значения
@@ -95,9 +123,9 @@ function renderCalculator() {
     });
   });
   document.getElementById('nextBtn').addEventListener('click', () => {
-    if (typeof gtag === 'function') {
-      gtag('event', 'continue_click');
-    }
+    // --- АНАЛИТИКА: Клик по "Продолжить" ---
+    sendGA('5639_click_continue_var2');
+    sendYM('5639_click_continue_var2');
     location.hash = 'confirm';
   });
 }
@@ -157,11 +185,30 @@ function renderConfirm() {
   document.getElementById('backBtn').addEventListener('click', () => {
     location.hash = '';
   });
+  // --- АНАЛИТИКА: Просмотр экрана подтверждения рассрочки ---
+  if (!state.analytics.agreementScreen) {
+    sendGA('5639_page_view_agreement_var2');
+    sendYM('5639_page_view_agreement_var2');
+    state.analytics.agreementScreen = true;
+  }
   document.getElementById('submitBtn').addEventListener('click', () => {
+    // --- АНАЛИТИКА: Клик по "Оформить рассрочку" ---
+    const params = {
+      date: Date.now(),
+      variant: VARIANT,
+      sum: state.amount,
+      period: `${state.term} мес`,
+      payment: state.payment
+    };
+    sendGA('5639_click_agreement_make_deal_var2', params);
+    sendYM('5639_click_agreement_make_deal_var2', params);
     location.hash = 'success';
   });
   if (infoBlockHtml) {
     document.getElementById('infoBlock').addEventListener('click', () => {
+      // --- АНАЛИТИКА: Клик по "more info" на экране подтверждения ---
+      sendGA('5639_click_agreement_more_info_var2');
+      sendYM('5639_click_agreement_more_info_var2');
       location.hash = 'info';
     });
   }
@@ -181,13 +228,19 @@ function renderInfo() {
     <h3 style="font-size:1.2rem;margin-top:32px;margin-bottom:16px;">Как быстро поступят деньги</h3>
     <ul class="info-list">
       <li>до 49 999 ₽ — сразу на карту</li>
-      <li>от 50 000 до 199 999 ₽ — перечислим деньги через 4 часа или чуть позже</li>
-      <li>свыше 200 000 ₽ — перечислим деньги через 48 часов или чуть позже</li>
+      <li>от 50 000 до 100 000 ₽ — перечислим деньги через 4 часа или чуть позже</li>
+      <li>свыше 100 000 ₽ — перечислим деньги через 48 часов или чуть позже</li>
     </ul>
     <h3 style="font-size:1.2rem;margin-top:32px;margin-bottom:16px;">Пример</h3>
     <p style="font-size:1.15rem;margin-bottom:32px;">У Саши есть действующая рассрочка 35 000 ₽ и он оформляет новую рассрочку на сумму 25 000 ₽. Поскольку общая сумма составляет 60 000 рублей — новую рассрочку сможем перечислить только через 4 часа.</p>
     <button class="info-ok-btn" id="infoOkBtn">Понятно</button>
   `;
+  // --- АНАЛИТИКА: Просмотр экрана информации (после клика на more info) ---
+  if (!state.analytics.moreInfoScreen) {
+    sendGA('5639_page_view_more_info_var2');
+    sendYM('5639_page_view_more_info_var2');
+    state.analytics.moreInfoScreen = true;
+  }
   document.getElementById('infoOkBtn').addEventListener('click', () => {
     location.hash = 'confirm';
   });
@@ -203,6 +256,12 @@ function renderSuccess() {
     <h2 style="text-align:center;">Только тссс</h2>
     <p style="text-align:center;font-size:1.2rem;">Вы поучаствовали в очень важном исследовании, которое поможет улучшить продукт. Вы – наш герой!</p>
   `;
+  // --- АНАЛИТИКА: Просмотр финальной страницы ---
+  if (!state.analytics.endScreen) {
+    sendGA('5639_end_page_view_var2');
+    sendYM('5639_end_page_view_var2');
+    state.analytics.endScreen = true;
+  }
   // Ставим флаг, чтобы при обновлении всегда показывалась заглушка
   localStorage.setItem(STORAGE_KEY, 'true');
   // Блокируем возврат назад
