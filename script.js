@@ -157,16 +157,7 @@ function renderConfirm() {
     infoBlockHtml = `
       <div class="info-block" id="infoBlock">
         <span class="info-icon" aria-hidden="true">
-          <!-- robot face icon -->
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="7" width="16" height="10" rx="3" fill="#fff" stroke="#212124" stroke-width="2"/>
-            <rect x="8" y="11" width="2" height="2" rx="1" fill="#212124"/>
-            <rect x="14" y="11" width="2" height="2" rx="1" fill="#212124"/>
-            <rect x="10" y="15" width="4" height="1.5" rx="0.75" fill="#212124"/>
-            <rect x="11" y="3" width="2" height="4" rx="1" fill="#212124"/>
-            <rect x="3" y="10" width="2" height="4" rx="1" fill="#212124"/>
-            <rect x="19" y="10" width="2" height="4" rx="1" fill="#212124"/>
-          </svg>
+          <img src="img/face_robot.png" alt="Robot face" width="24" height="24" style="width: 24px; height: 24px; object-fit: contain;">
         </span>
         <span class="info-text">Деньги могут прийти не сразу. Рассказываем, почему так</span>
         <span class="info-arrow" aria-hidden="true">
