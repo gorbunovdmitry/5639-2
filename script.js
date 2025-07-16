@@ -157,10 +157,13 @@ function renderConfirm() {
     infoBlockHtml = `
       <div class="info-block" id="infoBlock">
         <span class="info-icon" aria-hidden="true">
+          <!-- angry face icon -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.1362 17.3359V10.6745H10.8741V17.3359H13.1362Z" fill="#212124"/>
-            <path d="M13.4541 7.88802C13.4541 8.69056 12.8035 9.34115 12.001 9.34115C11.1984 9.34115 10.5479 8.69056 10.5479 7.88802C10.5479 7.08548 11.1984 6.4349 12.001 6.4349C12.8035 6.4349 13.4541 7.08548 13.4541 7.88802Z" fill="#212124"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.001 12.0078C22.001 17.5307 17.5238 22.0078 12.001 22.0078C6.47813 22.0078 2.00098 17.5307 2.00098 12.0078C2.00098 6.48496 6.47813 2.00781 12.001 2.00781C17.5238 2.00781 22.001 6.48496 22.001 12.0078ZM20.001 12.0078C20.001 16.4261 16.4193 20.0078 12.001 20.0078C7.5827 20.0078 4.00098 16.4261 4.00098 12.0078C4.00098 7.58953 7.5827 4.00781 12.001 4.00781C16.4193 4.00781 20.001 7.58953 20.001 12.0078Z" fill="#212124"/>
+            <circle cx="12" cy="12" r="10" stroke="#212124" stroke-width="2" fill="#fff"/>
+            <path d="M8.5 9.5C8.5 9.5 9.5 8 12 8C14.5 8 15.5 9.5 15.5 9.5" stroke="#212124" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M9 15C9.5 15.5 10.5 16 12 16C13.5 16 14.5 15.5 15 15" stroke="#212124" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M9 11L8 12" stroke="#212124" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M15 11L16 12" stroke="#212124" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </span>
         <span class="info-text">Деньги могут прийти не сразу. Рассказываем, почему так</span>
