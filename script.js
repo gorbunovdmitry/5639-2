@@ -290,10 +290,40 @@ function renderSuccess() {
 
 // --- Инициализация ---
 window.addEventListener('hashchange', render);
-window.addEventListener('DOMContentLoaded', () => {
-  // Если уже завершено — сразу показываем заглушку
-  if (localStorage.getItem(STORAGE_KEY) === 'true') {
-    location.hash = 'success';
-  }
-  render();
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('installment-form');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const variant = document.getElementById('variant').value;
+    const sum = document.getElementById('sum').value;
+    const period = document.getElementById('period').value;
+    const payment = document.getElementById('payment').value;
+    const date = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+    fetch('https://script.google.com/macros/s/AKfycbzF6Zk4hy_KQzMPKQsrZXfCcok4gy3w8i7ypDL_8j1bDPEWDC7jLeq4xugnk3MZi0sQ/exec', {
+      method: 'POST',
+      body: JSON.stringify({
+        date,
+        variant,
+        sum,
+        period,
+        payment
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      alert('Данные успешно отправлены!');
+      form.reset();
+    })
+    .catch(error => {
+      console.error('Ошибка!', error.message);
+      alert('Ошибка отправки данных!');
+    });
+  });
 }); 
