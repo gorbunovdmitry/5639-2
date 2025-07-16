@@ -208,30 +208,18 @@ function renderConfirm() {
     sendYM('5639_page_view_agreement_var2');
     state.analytics.agreementScreen = true;
   }
-  document.getElementById('submitBtn').addEventListener('click', function() {
-    const date = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    fetch('https://script.google.com/macros/s/AKfycbzF6Zk4hy_KQzMPKQsrZXfCcok4gy3w8i7ypDL_8j1bDPEWDC7jLeq4xugnk3MZi0sQ/exec', {
-      method: 'POST',
-      body: JSON.stringify({
-        date,
-        variant: VARIANT,
-        sum: state.amount,
-        period: state.term + ' мес',
-        payment: state.payment
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert('Данные успешно отправлены!');
-      location.hash = 'success';
-    })
-    .catch(error => {
-      alert('Ошибка отправки данных!');
-      console.error('Ошибка!', error.message);
-    });
+  document.getElementById('submitBtn').addEventListener('click', () => {
+    // --- АНАЛИТИКА: Клик по "Оформить рассрочку" ---
+    const params = {
+      date: Date.now(),
+      variant: VARIANT,
+      sum: state.amount,
+      period: `${state.term} мес`,
+      payment: state.payment
+    };
+    sendGA('5639_click_agreement_make_deal_var2', params);
+    sendYM('5639_click_agreement_make_deal_var2', params);
+    location.hash = 'success';
   });
   if (infoBlockHtml) {
     document.getElementById('infoBlock').addEventListener('click', () => {
