@@ -237,24 +237,24 @@ function renderConfirm() {
 }
 
 function renderInfo() {
-  document.title = 'Порядок зачисления суммы рассрочки';
+  document.title = 'Почему деньги могут зачислиться не сразу';
   document.getElementById('app').innerHTML = `
     <button id="infoCloseBtn" class="info-close-btn" aria-label="Закрыть" style="position:absolute;top:16px;right:16px;background:none;border:none;padding:0;z-index:10;">
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M31 18.4L29.6 17L24 22.6L18.4 17L17 18.4L22.6 24L17 29.6L18.4 31L24 25.4L29.6 31L31 29.6L25.4 24L31 18.4Z" fill="#0E0E0E"/>
       </svg>
     </button>
-    <h2 class="screen-title" style="margin-top:32px;">Порядок зачисления<br>суммы рассрочки</h2>
-    <p style="font-size:1.15rem;margin-bottom:18px;">По закону о защите от мошенничества, кредитные деньги зачислим<br>через некоторое время.</p>
-    <p style="font-size:1.15rem;margin-bottom:18px;">Срок зачисления зависит от суммы долга по действующим рассрочкам и суммы новой рассрочки</p>
+    <h2 class="screen-title" style="margin-top:32px;">Почему деньги могут зачислиться не сразу</h2>
+    <p style="font-size:1.15rem;margin-bottom:18px;">Это требование закона по защите от мошенников. После одобрения рассрочки банк должен убедиться, что она была оформлена добровольно, а не под влиянием злоумышленников.</p>
     <h3 style="font-size:1.2rem;margin-top:32px;margin-bottom:16px;">Как быстро поступят деньги</h3>
+    <p style="font-size:1.15rem;margin-bottom:18px;">Зависит от суммы всех рассрочек — и новой, и действующих.</p>
     <ul class="info-list">
-      <li>до 49 999 ₽ — сразу на карту</li>
-      <li>от 50 000 до 100 000 ₽ — перечислим деньги через 4 часа или чуть позже</li>
-      <li>свыше 100 000 ₽ — перечислим деньги через 48 часов или чуть позже</li>
+      <li>Если сумма всех рассрочек не больше 49 999 ₽, деньги поступят сразу на карту.</li>
+      <li>Если от 50 000 до 200 000 ₽ — перечислим деньги через 4 часа или позже.</li>
+      <li>Если больше 200 000 ₽ — через 48 часов или позже.</li>
     </ul>
-    <h3 style="font-size:1.2rem;margin-top:32px;margin-bottom:16px;">Пример</h3>
-    <p style="font-size:1.15rem;margin-bottom:32px;">У Саши есть действующая рассрочка 35 000 ₽ и он оформляет новую рассрочку на сумму 25 000 ₽. Поскольку общая сумма составляет 60 000 рублей — новую рассрочку сможем перечислить только через 4 часа.</p>
+    <h3 style="font-size:1.2rem;margin-top:32px;margin-bottom:16px;">Как это работает</h3>
+    <p style="font-size:1.15rem;margin-bottom:32px;">Например, у Саши есть действующая рассрочка — 35 000 ₽, и он оформляет новую на сумму 25 000 ₽.<br><br>Общая сумма двух рассрочек — 60 000 рублей. Это значит, что деньги по новой рассрочке придут на Сашин счёт через 4 часа.</p>
     <button class="info-ok-btn" id="infoOkBtn">Понятно</button>
   `;
   // --- АНАЛИТИКА: Просмотр экрана информации (после клика на more info) ---
