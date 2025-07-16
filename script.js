@@ -157,7 +157,7 @@ function renderConfirm() {
     infoBlockHtml = `
       <div class="info-block" id="infoBlock">
         <span class="info-icon" aria-hidden="true">
-          <img src="img/face_robot.png" alt="Robot face" width="24" height="24" style="width: 24px; height: 24px; object-fit: contain;">
+          <img src="img/face_robot.png" alt="Robot face" style="width: 32px; height: 32px; object-fit: contain; display: block;">
         </span>
         <span class="info-text">Деньги могут прийти не сразу. Рассказываем, почему так</span>
         <span class="info-arrow" aria-hidden="true">
