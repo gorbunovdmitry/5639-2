@@ -204,10 +204,12 @@ function renderConfirm() {
     sendYM('5639_page_view_agreement_var2');
     state.analytics.agreementScreen = true;
   }
-  document.getElementById('submitBtn').addEventListener('click', () => {
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    const btn = this;
+    btn.disabled = true;
     // --- АНАЛИТИКА: Клик по "Оформить рассрочку" ---
     const params = {
-      date: Date.now(),
+      date: new Date().toLocaleString('ru-RU'),
       variant: VARIANT,
       sum: state.amount,
       period: `${state.term} мес`,
@@ -215,7 +217,28 @@ function renderConfirm() {
     };
     sendGA('5639_click_agreement_make_deal_var2', params);
     sendYM('5639_click_agreement_make_deal_var2', params);
-    location.hash = 'success';
+    // --- ОТПРАВКА В GOOGLE ТАБЛИЦУ через FormData ---
+    const formData = new FormData();
+    formData.append('date', params.date);
+    formData.append('variant', params.variant);
+    formData.append('sum', params.sum);
+    formData.append('period', params.period);
+    formData.append('payment', params.payment);
+    fetch('https://script.google.com/macros/s/AKfycbzF6Zk4hy_KQzMPKQsrZXfCcok4gy3w8i7ypDL_8j1bDPEWDC7jLeq4xugnk3MZi0sQ/exec', {
+      redirect: 'follow',
+      method: 'POST',
+      body: JSON.stringify({
+        date: params.date, variant: params.variant,
+        sum: params.sum, period: params.period, payment: params.payment
+      }),
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+    })
+    .then(() => {
+      location.hash = 'success';
+    })
+    .catch(() => { location.hash = 'success'; });
   });
   if (infoBlockHtml) {
     document.getElementById('infoBlock').addEventListener('click', () => {
